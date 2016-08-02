@@ -18,29 +18,14 @@
           type: Date
         }
       },
-      attached: function() {
+      attributeChanged: function() {
         this.addDays();
-        this.setGotoAttr();
       },
       addEmptyDays: function(date) {
         for(let i = 0; i < date.getDay(); i++) {
           const empty = document.createElement("d-picker-day-empty");
           Polymer.dom(this.root).appendChild(empty);
         }
-      },
-      setGotoAttr: function() {
-        const d = this.date;
-        let goto_left  = d.getMonth() + '/1/' + d.getFullYear();
-        let goto_right = (d.getMonth() + 2) + '/1/' + d.getFullYear();
-        if(d.getMonth() == 0) {
-          goto_left = '12/1/' + (d.getFullYear() - 1);
-          goto_right = '2/1/' + d.getFullYear();
-        } else if(d.getMonth() == 11) {
-          goto_left = '11/1/' + d.getFullYear();
-          goto_right = '1/1/' + (d.getFullYear() + 1);
-        }
-        Polymer.dom(this).setAttribute("goto_left", goto_left);
-        Polymer.dom(this).setAttribute("goto_right", goto_right);
       },
       addDays: function() {
         const month = this.date.getMonth() + 1;
@@ -52,9 +37,9 @@
         while(current_month == firt_date.getMonth()) {
           const day = document.createElement("d-picker-day");
           Polymer.dom(day).setAttribute("number", current_date.getDate());
-          if(current_date.getDate() == this.date.getDate()) {
+          /*if(current_date.getDate() == this.date.getDate()) {
             $(day).css("background-color", "#ffd97d");
-          }
+          }*/
           Polymer.dom(this.root).appendChild(day);
           this.updateStyles();
           current_date = this.incremetOneDay(current_date);

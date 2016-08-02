@@ -14,29 +14,53 @@
         overflow: hidden;
       }
     </style>
-    <d-picker-left></d-picker-left>
+    <d-picker-left class="goto"></d-picker-left>
     <!-- her go the container -->
-    <d-picker-right></d-picker-right>
+    <d-picker-right class="goto"></d-picker-right>
   </template>
   <script>
     Polymer({
       is: "d-picker",
       ready: function() {
-        this.renderContainer();
+        this.renderContainer(new Date());
         //this.renderContainer(new Date('9/7/2016'));
         //this.renderContainer(new Date('8/7/2016'));
         //this.renderContainer(new Date('7/19/2016'));
+        this.clickGoto();
+      },
+      clickGoto: function() {
+        const _this = this;
+        $(this).on("click", ".goto", function() {
+          const ndate = new Date($(this).attr("goto"));
+          _this.renderContainer(ndate);
+        });
       },
       cleanContainers: function() {
         const container = this.$$("d-picker-container");
-        container && Polymer.dom(this.root).removeChild(container);
+        if(container) {
+          Polymer.dom(this.root).removeChild(container);
+        }
       },
       renderContainer: function(date) {
+        this.setGotoAttr(date);
         this.cleanContainers()
         const right = this.$$("d-picker-right");
         const container = document.createElement("d-picker-container");
-        date && Polymer.dom(container).setAttribute("date", date);
+        Polymer.dom(container).setAttribute("date", date);
         Polymer.dom(this.root).insertBefore(container, right);
+      },
+      setGotoAttr: function(d) {
+        let goto_left  = d.getMonth() + '/1/' + d.getFullYear();
+        let goto_right = (d.getMonth() + 2) + '/1/' + d.getFullYear();
+        if(d.getMonth() == 0) {
+          goto_left = '12/1/' + (d.getFullYear() - 1);
+          goto_right = '2/1/' + d.getFullYear();
+        } else if(d.getMonth() == 11) {
+          goto_left = '11/1/' + d.getFullYear();
+          goto_right = '1/1/' + (d.getFullYear() + 1);
+        }
+        Polymer.dom(this.$$("d-picker-left")).setAttribute("goto", goto_left);
+        Polymer.dom(this.$$("d-picker-right")).setAttribute("goto", goto_right);
       }
     })
   </script>
