@@ -19,17 +19,31 @@
       attached: function() {
         this.addDays();
       },
-      addEmptyDays: function(date) {
+      addStartEmptyDays: function(date) {
         for(let i = 0; i < date.getDay(); i++) {
-          const empty = document.createElement("d-picker-day-empty");
-          Polymer.dom(this.root).appendChild(empty);
+          const old_date = this.addDaysToDate(
+            date, -(date.getDay() - i)
+          )
+          this.addEmptyDays(old_date.getDate())
         }
+      },
+      addEndEmptyDays: function(date) {
+        if(date.getDay() == 0) { return; }
+        for(let i = 0; i <= 6 - date.getDay(); i++) {
+          const next_date = this.addDaysToDate(date, i)
+          this.addEmptyDays(next_date.getDate())
+        }
+      },
+      addEmptyDays: function(number) {
+        const empty = document.createElement("d-picker-day-empty");
+        Polymer.dom(empty).setAttribute("number", number);
+        Polymer.dom(this.root).appendChild(empty);
       },
       addDays: function() {
         const month = this.date.getMonth() + 1;
         const year = this.date.getFullYear();
         const firt_date = new Date(month + '/1/' + year);
-        this.addEmptyDays(firt_date);
+        this.addStartEmptyDays(firt_date);
         let current_date = firt_date;
         let current_month = firt_date.getMonth();
         const now = new Date();
@@ -43,13 +57,14 @@
           }
           Polymer.dom(this.root).appendChild(day);
           this.updateStyles();
-          current_date = this.incremetOneDay(current_date);
+          current_date = this.addDaysToDate(current_date, 1);
           current_month = current_date.getMonth();
         }
+        this.addEndEmptyDays(current_date)
       },
-      incremetOneDay: function(date) {
+      addDaysToDate: function(date, n) {
         var result = new Date(date);
-        result.setDate(date.getDate() + 1);
+        result.setDate(date.getDate() + n);
         return result;
       }
     });
