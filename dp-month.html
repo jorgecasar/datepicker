@@ -12,15 +12,16 @@
         width: 260px;
         display: flex;
         justify-content: space-between;
+        overflow: hidden;
       }
       .container {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-flow: column;
+        width: 168px;
       }
       #days {
-        width: 168px;
         display: flex;
         flex-wrap: wrap;
         margin-bottom: 10px;
@@ -37,10 +38,12 @@
       .go-to.left {
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
+        z-index: 999;
       }
       .go-to.right {
         border-top-right-radius: 4px;
         border-bottom-right-radius: 4px;
+        z-index: 998;
       }
     </style>
     <div class="go-to left">
@@ -66,9 +69,16 @@
         const this_root = this;
         this.renderCalendar(new Date());
         $(this).on("click", ".go-to", function() {
+          let x_pos = $(this).hasClass("left")? -100 : 100
           const ndate_str = $(this).attr("date_str");
-          console.log("ndate_str", ndate_str);
-          this_root.renderCalendar(new Date(ndate_str));
+          new TimelineLite()
+          .to(".container", 0.5, {
+            x: x_pos,
+            autoAlpha: 0,
+            ease: Linear.easeNone
+          })
+          .set(".container", {x: 0, autoAlpha: 1}, "clean")
+          .add(this_root.renderCalendar.bind(this_root, new Date(ndate_str)), "clean")
         });
       },
       renderCalendar: function(date) {
@@ -100,25 +110,23 @@
           currentdate = this_root.addDays(currentdate, 1);
           currentmonth = currentdate.getMonth();
         }
-        let month_r = date.getMonth() + 2;
-        let month_l = date.getMonth();
-        let year_r = date.getFullYear();
-        let year_l = date.getFullYear();
+        this_root.setLeftRightDatesStr(date);
+      },
+      setLeftRightDatesStr: function(date) {
+        const this_root = this;
+        let left_date = date.getMonth() + '/1/' + date.getFullYear();
+        let right_date = (date.getMonth() + 2) + '/1/' + date.getFullYear();
         if(date.getMonth() == 0) {
-          month_l = 12;
-          month_r = 2;
-          year_l = date.getFullYear() - 1;
-          year_r = date.getFullYear();
+          left_date = '12/1/' + (date.getFullYear() - 1);
+          right_date = '2/1/' + date.getFullYear();
         } else if(date.getMonth() == 11) {
-          month_l = 11;
-          month_r = 1;
-          year_l = date.getFullYear();
-          year_r = date.getFullYear() + 1;
+          left_date = '11/1/' + date.getFullYear();
+          right_date = '1/1/' + (date.getFullYear() + 1);
         }
         const goto_left = this_root.$$(".go-to.left");
-        goto_left.setAttribute("date_str", (month_l + '/1/' + year_l));
+        goto_left.setAttribute("date_str", left_date);
         const goto_right = this_root.$$(".go-to.right");
-        goto_right.setAttribute("date_str", (month_r + '/1/' + year_r));
+        goto_right.setAttribute("date_str", right_date);
       },
       addDays: function(date, days) {
         var result = new Date(date);
