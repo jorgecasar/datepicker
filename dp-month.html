@@ -9,8 +9,11 @@
       :host {
         border: 1px solid #d9d9d9;
         border-radius: 4px;
-        width: 200px;
-        height: 200px;
+        width: 260px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .container {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -20,37 +23,71 @@
         width: 168px;
         display: flex;
         flex-wrap: wrap;
+        margin-bottom: 10px;
+      }
+      .go-to {
+        display: flex;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+      .go-to:hover {
+        background-color: #f5f9fb;
+      }
+      .go-to.left {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
+      .go-to.right {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
       }
     </style>
-    <dp-month-year-label month="Junio" year="2016"></dp-month-year-label>
-    <dp-day-labels></dp-day-labels>
-    <div id="days"></div>
+    <div class="go-to left">
+      <svg x="0px" y="0px" width="30px" height="30px" viewBox="0 0 48 48">
+        <polygon points="15.808,24 26.301,13.507 29.973,17.179 23.161,24 29.977,30.816 26.302,34.492"/>
+      </svg>
+    </div>
+    <div class="container">
+      <dp-month-year-label month="Junio" year="2016"></dp-month-year-label>
+      <dp-day-labels></dp-day-labels>
+      <div id="days"></div>
+    </div>
+    <div class="go-to right">
+      <svg x="0px" y="0px" width="30px" height="30px" viewBox="0 0 48 48">
+        <polygon points="32.227,24 21.734,13.507 18.062,17.179 24.874,24 18.058,30.816 21.733,34.492"/>
+      </svg>
+    </div>
   </template>
   <script>
     Polymer({
       is: "dp-month",
       ready: function() {
         const this_root = this;
+        this.renderCalendar(new Date('1/20/2016'));
+        $(this).on("click", ".go-to", function() {
+          const ndate_str = $(this).attr("date_str");
+          console.log("ndate_str", ndate_str);
+          this_root.renderCalendar(new Date(ndate_str));
+        });
+      },
+      renderCalendar: function(date) {
+        const this_root = this;
         const days_container = this_root.$.days;
-        const date = this_root.addDays(new Date('6/1/2016'), 0);
-        /*const month = [
+        $.each(Polymer.dom(days_container).childNodes, function(index, node) {
+          Polymer.dom(days_container).removeChild(node);
+        });
+        const month = [
           'Enero','Febrero','Marzo','Abril','Mayo','Junio',
           'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'
-        ][date.getMonth()]
-        const day = [
-          'D','L','M','M','J','V','S'
-        ][date.getDay()]
-        const nday = date.getDate();
-
-        console.log("month", month)
-        console.log("day", day)
-        console.log("nday", nday)/**/
+        ]
+        const month_year_label = this_root.$$("dp-month-year-label");
+        Polymer.dom(month_year_label).setAttribute("month", month[date.getMonth()]);
+        Polymer.dom(month_year_label).setAttribute("year", date.getFullYear());
         for(let i = 0; i < date.getDay(); i++) {
           const dp_day_empty = document.createElement("dp-day-empty");
           Polymer.dom(days_container).appendChild(dp_day_empty);
         }
-        console.log(date)
-        console.log(date.getDay())
         const firstdate = new Date(
           (date.getMonth()+1) + '/1/' + date.getFullYear()
         );
@@ -63,6 +100,25 @@
           currentdate = this_root.addDays(currentdate, 1);
           currentmonth = currentdate.getMonth();
         }
+        let month_r = date.getMonth() + 2;
+        let month_l = date.getMonth();
+        let year_r = date.getFullYear();
+        let year_l = date.getFullYear();
+        if(date.getMonth() == 0) {
+          month_l = 12;
+          month_r = 2;
+          year_l = date.getFullYear() - 1;
+          year_r = date.getFullYear();
+        } else if(date.getMonth() == 11) {
+          month_l = 11;
+          month_r = 1;
+          year_l = date.getFullYear();
+          year_r = date.getFullYear() + 1;
+        }
+        const goto_left = this_root.$$(".go-to.left");
+        goto_left.setAttribute("date_str", (month_l + '/1/' + year_l));
+        const goto_right = this_root.$$(".go-to.right");
+        goto_right.setAttribute("date_str", (month_r + '/1/' + year_r));
       },
       addDays: function(date, days) {
         var result = new Date(date);
