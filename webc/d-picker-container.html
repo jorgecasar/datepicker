@@ -20,34 +20,38 @@
         margin-bottom: 10px;
       }
     </style>
-    <d-picker-month-year-label></d-picker-month-year-label>
-    <d-picker-week-labels></d-picker-week-labels>
-    <d-picker-days></d-picker-days>
   </template>
   <script>
     Polymer({
       is: "d-picker-container",
       properties: {
-        date: {
-          type: Date
-        }
+        date: Date,
+        showcd: String
       },
       attached: function() {
         this.setMothYearInfo();
+        this.setWeekLabels();
         this.setDaysInfo();
       },
       setDaysInfo: function() {
-        const days = this.$$("d-picker-days");
+        const days = document.createElement("d-picker-days");
         Polymer.dom(days).setAttribute("date", this.date);
+        Polymer.dom(days).setAttribute("showcd", this.showcd);
+        Polymer.dom(this.root).appendChild(days);
+      },
+      setWeekLabels: function() {
+        const w_labels =  document.createElement("d-picker-week-labels");
+        Polymer.dom(this.root).appendChild(w_labels);
       },
       setMothYearInfo: function() {
         const months = [
           'Enero','Febrero','Marzo','Abril','Mayo','Junio',
           'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'
         ]
-        const label = this.$$("d-picker-month-year-label");
-        Polymer.dom(label).setAttribute("month", months[this.date.getMonth()]);
-        Polymer.dom(label).setAttribute("year", this.date.getFullYear());
+        const m_label = document.createElement("d-picker-month-year-label");
+        Polymer.dom(m_label).setAttribute("month", months[this.date.getMonth()]);
+        Polymer.dom(m_label).setAttribute("year", this.date.getFullYear());
+        Polymer.dom(this.root).appendChild(m_label);
       }
     });
   </script>

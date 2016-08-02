@@ -22,17 +22,14 @@
     Polymer({
       is: "d-picker",
       ready: function() {
-        this.renderContainer(new Date());
-        //this.renderContainer(new Date('9/7/2016'));
-        //this.renderContainer(new Date('8/7/2016'));
-        //this.renderContainer(new Date('7/19/2016'));
+        this.renderContainer(new Date(), true);
         this.clickGoto();
       },
       clickGoto: function() {
         const _this = this;
         $(this).on("click", ".goto", function() {
           const ndate = new Date($(this).attr("goto"));
-          _this.renderContainer(ndate);
+          _this.renderContainer(ndate, false);
         });
       },
       cleanContainers: function() {
@@ -41,12 +38,13 @@
           Polymer.dom(this.root).removeChild(container);
         }
       },
-      renderContainer: function(date) {
+      renderContainer: function(date, show_current_day) {
         this.setGotoAttr(date);
         this.cleanContainers()
         const right = this.$$("d-picker-right");
         const container = document.createElement("d-picker-container");
         Polymer.dom(container).setAttribute("date", date);
+        Polymer.dom(container).setAttribute("showcd", show_current_day);
         Polymer.dom(this.root).insertBefore(container, right);
       },
       setGotoAttr: function(d) {

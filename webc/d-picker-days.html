@@ -14,11 +14,10 @@
     Polymer({
       is: "d-picker-days",
       properties: {
-        date: {
-          type: Date
-        }
+        date: Date,
+        showcd: String
       },
-      attributeChanged: function() {
+      attached: function() {
         this.addDays();
       },
       addEmptyDays: function(date) {
@@ -37,9 +36,10 @@
         while(current_month == firt_date.getMonth()) {
           const day = document.createElement("d-picker-day");
           Polymer.dom(day).setAttribute("number", current_date.getDate());
-          /*if(current_date.getDate() == this.date.getDate()) {
+          if(current_date.getDate() == this.date.getDate()
+            && this.showcd == 'true') {//TODO: if showcd == Boolean, it fail
             $(day).css("background-color", "#ffd97d");
-          }*/
+          }
           Polymer.dom(this.root).appendChild(day);
           this.updateStyles();
           current_date = this.incremetOneDay(current_date);
