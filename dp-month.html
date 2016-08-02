@@ -2,11 +2,13 @@
 <link rel="import" href="dp-day.html">
 <link rel="import" href="dp-day-empty.html">
 <link rel="import" href="dp-day-labels.html">
+<link rel="import" href="dp-month-year-label.html">
 <dom-module id="dp-month">
   <template strip-whitespace>
     <style>
       :host {
-        border: 1px solid;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
         width: 200px;
         height: 200px;
         display: flex;
@@ -20,8 +22,7 @@
         flex-wrap: wrap;
       }
     </style>
-    <div id="month-label">
-
+    <dp-month-year-label month="Junio" year="2016"></dp-month-year-label>
     <dp-day-labels></dp-day-labels>
     <div id="days"></div>
   </template>
