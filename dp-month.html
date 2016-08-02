@@ -64,7 +64,7 @@
       is: "dp-month",
       ready: function() {
         const this_root = this;
-        this.renderCalendar(new Date('1/20/2016'));
+        this.renderCalendar(new Date());
         $(this).on("click", ".go-to", function() {
           const ndate_str = $(this).attr("date_str");
           console.log("ndate_str", ndate_str);
