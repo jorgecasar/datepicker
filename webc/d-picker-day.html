@@ -1,0 +1,32 @@
+<link rel="import" href="../js/lib/polymer/polymer.html">
+<dom-module id="d-picker-day">
+  <template strip-whitespace>
+    <style>
+      :host {
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f7f7f7;
+        margin: 2px;
+        cursor: default;
+        color: #1e4b60;
+        font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;
+      }
+      :host:hover {
+        border-radius: 100%;
+        border: 1px solid #9cc3da;
+        margin: 1px;
+        font-weight:bold;
+      }
+    </style>
+    [[number]]
+  </template>
+  <script>
+    Polymer({
+      is: "d-picker-day"
+    });
+  </script>
+</dom-module>

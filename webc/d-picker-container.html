@@ -1,0 +1,55 @@
+<link rel="import" href="../js/lib/polymer/polymer.html">
+<link rel="import" href="d-picker-month-year-label.html">
+<link rel="import" href="d-picker-week-labels.html">
+<link rel="import" href="d-picker-days.html">
+<dom-module id="d-picker-container">
+  <template strip-whitespace>
+    <style>
+      :host {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+        width: 168px;
+      }
+      d-picker-month-year-label {
+        margin-top: 10px;
+        margin-bottom: 15px;
+      }
+      d-picker-days {
+        margin-bottom: 10px;
+      }
+    </style>
+    <d-picker-month-year-label></d-picker-month-year-label>
+    <d-picker-week-labels></d-picker-week-labels>
+    <d-picker-days></d-picker-days>
+  </template>
+  <script>
+    Polymer({
+      is: "d-picker-container",
+      properties: {
+        date: {
+          type: Date,
+          value: new Date()
+        }
+      },
+      attached: function() {
+        this.setMothYearInfo();
+        this.setDaysInfo();
+      },
+      setDaysInfo: function() {
+        const days = this.$$("d-picker-days");
+        Polymer.dom(days).setAttribute("date", this.date);
+      },
+      setMothYearInfo: function() {
+        const months = [
+          'Enero','Febrero','Marzo','Abril','Mayo','Junio',
+          'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'
+        ]
+        const label = this.$$("d-picker-month-year-label");
+        Polymer.dom(label).setAttribute("month", months[this.date.getMonth()]);
+        Polymer.dom(label).setAttribute("year", this.date.getFullYear());
+      }
+    });
+  </script>
+</dom-module>

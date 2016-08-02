@@ -1,0 +1,40 @@
+<link rel="import" href="../js/lib/polymer/polymer.html">
+<link rel="import" href="d-picker-left.html">
+<link rel="import" href="d-picker-right.html">
+<link rel="import" href="d-picker-container.html">
+<dom-module id="d-picker">
+  <template strip-whitespace>
+    <style>
+      :host {
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+        width: 260px;
+        display: flex;
+        justify-content: space-between;
+        overflow: hidden;
+      }
+    </style>
+    <d-picker-left></d-picker-left>
+    <!-- her go the container -->
+    <d-picker-right></d-picker-right>
+  </template>
+  <script>
+    Polymer({
+      is: "d-picker",
+      ready: function() {
+        this.renderContainer(new Date('7/7/2016'));
+      },
+      cleanContainers: function() {
+        const container = this.$$("d-picker-container");
+        container && Polymer.dom(this.root).removeChild(container);
+      },
+      renderContainer: function(date) {
+        this.cleanContainers()
+        const right = this.$$("d-picker-right");
+        const container = document.createElement("d-picker-container");
+        date && Polymer.dom(container).setAttribute("date", date);
+        Polymer.dom(this.root).insertBefore(container, right);
+      }
+    })
+  </script>
+</dom-module>

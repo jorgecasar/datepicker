@@ -1,0 +1,55 @@
+<link rel="import" href="../js/lib/polymer/polymer.html">
+<link rel="import" href="d-picker-day.html">
+<link rel="import" href="d-picker-day-empty.html">
+<dom-module id="d-picker-days">
+  <template strip-whitespace>
+    <style>
+      :host {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    </style>
+  </template>
+  <script>
+    Polymer({
+      is: "d-picker-days",
+      properties: {
+        date: {
+          type: Date
+        }
+      },
+      attached: function() {
+        this.getDateInfo();
+        this.addEmptyDays();
+        this.addDays();
+      },
+      getDateInfo: function() {
+        this._month = this.date.getMonth() + 1;
+        this._year = this.date.getFullYear();
+      },
+      addEmptyDays: function() {
+        for(let i = 0; i < this.date.getDay(); i++) {
+          const empty = document.createElement("d-picker-day-empty");
+          Polymer.dom(this.root).appendChild(empty);
+        }
+      },
+      addDays: function() {
+        const firt_date = new Date(this._month + '/1/' + this._year);
+        let current_date = firt_date;
+        let current_month = firt_date.getMonth();
+        while(current_month == firt_date.getMonth()) {
+          const day = document.createElement("d-picker-day");
+          Polymer.dom(day).setAttribute("number", current_date.getDate());
+          Polymer.dom(this.root).appendChild(day);
+          current_date = this.incremetOneDay(current_date);
+          current_month = current_date.getMonth();
+        }
+      },
+      incremetOneDay: function(date) {
+        var result = new Date(date);
+        result.setDate(date.getDate() + 1);
+        return result;
+      }
+    });
+  </script>
+</dom-module>
