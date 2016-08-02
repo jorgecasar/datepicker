@@ -1,0 +1,73 @@
+<link rel="import" href="js/lib/polymer/polymer.html">
+<link rel="import" href="dp-day.html">
+<link rel="import" href="dp-day-empty.html">
+<link rel="import" href="dp-day-labels.html">
+<dom-module id="dp-month">
+  <template strip-whitespace>
+    <style>
+      :host {
+        border: 1px solid;
+        width: 200px;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+      }
+      #days {
+        width: 168px;
+        display: flex;
+        flex-wrap: wrap;
+      }
+    </style>
+    <div id="month-label">
+
+    <dp-day-labels></dp-day-labels>
+    <div id="days"></div>
+  </template>
+  <script>
+    Polymer({
+      is: "dp-month",
+      ready: function() {
+        const this_root = this;
+        const days_container = this_root.$.days;
+        const date = this_root.addDays(new Date('6/1/2016'), 0);
+        /*const month = [
+          'Enero','Febrero','Marzo','Abril','Mayo','Junio',
+          'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'
+        ][date.getMonth()]
+        const day = [
+          'D','L','M','M','J','V','S'
+        ][date.getDay()]
+        const nday = date.getDate();
+
+        console.log("month", month)
+        console.log("day", day)
+        console.log("nday", nday)/**/
+        for(let i = 0; i < date.getDay(); i++) {
+          const dp_day_empty = document.createElement("dp-day-empty");
+          Polymer.dom(days_container).appendChild(dp_day_empty);
+        }
+        console.log(date)
+        console.log(date.getDay())
+        const firstdate = new Date(
+          (date.getMonth()+1) + '/1/' + date.getFullYear()
+        );
+        let currentdate = firstdate;
+        let currentmonth = firstdate.getMonth();
+        while (currentmonth == firstdate.getMonth()) {
+          const dp_day = document.createElement("dp-day");
+          Polymer.dom(dp_day).setAttribute("number", currentdate.getDate());
+          Polymer.dom(days_container).appendChild(dp_day);
+          currentdate = this_root.addDays(currentdate, 1);
+          currentmonth = currentdate.getMonth();
+        }
+      },
+      addDays: function(date, days) {
+        var result = new Date(date);
+        result.setDate(date.getDate() + days);
+        return result;
+      }
+    });
+  </script>
+</dom-module>
