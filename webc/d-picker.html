@@ -22,14 +22,14 @@
     Polymer({
       is: "d-picker",
       ready: function() {
-        this.renderContainer(new Date(), true);
+        this.renderContainer(new Date());
         this.clickGoto();
       },
       clickGoto: function() {
         const _this = this;
         $(this).on("click", ".goto", function() {
           const ndate = new Date($(this).attr("goto"));
-          _this.renderContainer(ndate, false);
+          _this.renderContainer(ndate);
         });
       },
       cleanContainers: function() {
@@ -38,13 +38,12 @@
           Polymer.dom(this.root).removeChild(container);
         }
       },
-      renderContainer: function(date, show_current_day) {
+      renderContainer: function(date) {
         this.setGotoAttr(date);
         this.cleanContainers()
         const right = this.$$("d-picker-right");
         const container = document.createElement("d-picker-container");
         Polymer.dom(container).setAttribute("date", date);
-        Polymer.dom(container).setAttribute("showcd", show_current_day);
         Polymer.dom(this.root).insertBefore(container, right);
       },
       setGotoAttr: function(d) {

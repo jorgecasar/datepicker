@@ -14,8 +14,7 @@
     Polymer({
       is: "d-picker-days",
       properties: {
-        date: Date,
-        showcd: String
+        date: Date
       },
       attached: function() {
         this.addDays();
@@ -33,11 +32,13 @@
         this.addEmptyDays(firt_date);
         let current_date = firt_date;
         let current_month = firt_date.getMonth();
+        const now = new Date();
         while(current_month == firt_date.getMonth()) {
           const day = document.createElement("d-picker-day");
           Polymer.dom(day).setAttribute("number", current_date.getDate());
-          if(current_date.getDate() == this.date.getDate()
-            && this.showcd == 'true') {//TODO: if showcd == Boolean, it fail
+          if(current_date.getMonth() == now.getMonth()
+              && current_date.getDate() == now.getDate()
+              && current_date.getFullYear() == now.getFullYear()) {
             $(day).css("background-color", "#ffd97d");
           }
           Polymer.dom(this.root).appendChild(day);
