@@ -19,22 +19,19 @@
         }
       },
       attached: function() {
-        this.getDateInfo();
         this.addEmptyDays();
         this.addDays();
       },
-      getDateInfo: function() {
-        this._month = this.date.getMonth() + 1;
-        this._year = this.date.getFullYear();
-      },
       addEmptyDays: function() {
-        for(let i = 0; i < this.date.getDay(); i++) {
+        for(let i = 0; i <= this.date.getDay(); i++) {
           const empty = document.createElement("d-picker-day-empty");
           Polymer.dom(this.root).appendChild(empty);
         }
       },
       addDays: function() {
-        const firt_date = new Date(this._month + '/1/' + this._year);
+        const month = this.date.getMonth() + 1;
+        const year = this.date.getFullYear();
+        const firt_date = new Date(month + '/1/' + year);
         let current_date = firt_date;
         let current_month = firt_date.getMonth();
         while(current_month == firt_date.getMonth()) {

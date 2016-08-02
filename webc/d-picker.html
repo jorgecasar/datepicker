@@ -22,6 +22,9 @@
     Polymer({
       is: "d-picker",
       ready: function() {
+        //this.renderContainer();
+        this.renderContainer(new Date('9/7/2016'));
+        this.renderContainer(new Date('8/7/2016'));
         this.renderContainer(new Date('7/7/2016'));
       },
       cleanContainers: function() {
