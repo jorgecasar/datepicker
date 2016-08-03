@@ -21,10 +21,38 @@
       is: "d-picker",
       ready: function() {
         this.insertGotos();
-        this.renderContainer(new Date());
         this.clickGoto();
+        this.renderContainer(new Date());
         this.showSelectedDay();
         this.showContainerAgain();
+      },
+      insertGotos: function() {
+        const left = document.createElement("d-picker-left");
+        Polymer.dom(left).setAttribute("class", "goto");
+        Polymer.dom(this.root).appendChild(left);
+        const right = document.createElement("d-picker-right");
+        Polymer.dom(right).setAttribute("class", "goto");
+        Polymer.dom(this.root).appendChild(right);
+      },
+      clickGoto: function() {
+        const _this = this;
+        $(this).on("click", ".goto", function() {
+          const ndate = new Date($(this).attr("goto"));
+          _this.renderContainer(ndate);
+        });
+      },
+      setGotoAttr: function(d) {
+        let goto_left  = d.getMonth() + '/1/' + d.getFullYear();
+        let goto_right = (d.getMonth() + 2) + '/1/' + d.getFullYear();
+        if(d.getMonth() == 0) {
+          goto_left = '12/1/' + (d.getFullYear() - 1);
+          goto_right = '2/1/' + d.getFullYear();
+        } else if(d.getMonth() == 11) {
+          goto_left = '11/1/' + d.getFullYear();
+          goto_right = '1/1/' + (d.getFullYear() + 1);
+        }
+        Polymer.dom(this.$$("d-picker-left")).setAttribute("goto", goto_left);
+        Polymer.dom(this.$$("d-picker-right")).setAttribute("goto", goto_right);
       },
       showContainerAgain: function() {
         const _this = this;
@@ -34,14 +62,6 @@
           _this.insertGotos();
           _this.renderContainer(new Date(datestr));
         });
-      },
-      insertGotos: function() {
-        const left = document.createElement("d-picker-left");
-        Polymer.dom(left).setAttribute("class", "goto");
-        Polymer.dom(this.root).appendChild(left);
-        const right = document.createElement("d-picker-right");
-        Polymer.dom(right).setAttribute("class", "goto");
-        Polymer.dom(this.root).appendChild(right);
       },
       showSelectedDay: function(day) {
         const _this = this;
@@ -63,20 +83,6 @@
           Polymer.dom(_this.root).appendChild(show_date);
         });
       },
-      getMonthStr: function(index) {
-        const months = [
-          'Enero','Febrero','Marzo','Abril','Mayo','Junio',
-          'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'
-        ]
-        return months[index];
-      },
-      clickGoto: function() {
-        const _this = this;
-        $(this).on("click", ".goto", function() {
-          const ndate = new Date($(this).attr("goto"));
-          _this.renderContainer(ndate);
-        });
-      },
       cleanContainers: function() {
         const container = this.$$("d-picker-container");
         if(container) {
@@ -91,18 +97,12 @@
         Polymer.dom(container).setAttribute("date", date);
         Polymer.dom(this.root).insertBefore(container, right);
       },
-      setGotoAttr: function(d) {
-        let goto_left  = d.getMonth() + '/1/' + d.getFullYear();
-        let goto_right = (d.getMonth() + 2) + '/1/' + d.getFullYear();
-        if(d.getMonth() == 0) {
-          goto_left = '12/1/' + (d.getFullYear() - 1);
-          goto_right = '2/1/' + d.getFullYear();
-        } else if(d.getMonth() == 11) {
-          goto_left = '11/1/' + d.getFullYear();
-          goto_right = '1/1/' + (d.getFullYear() + 1);
-        }
-        Polymer.dom(this.$$("d-picker-left")).setAttribute("goto", goto_left);
-        Polymer.dom(this.$$("d-picker-right")).setAttribute("goto", goto_right);
+      getMonthStr: function(index) {
+        const months = [
+          'Enero','Febrero','Marzo','Abril','Mayo','Junio',
+          'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'
+        ]
+        return months[index];
       }
     })
   </script>
