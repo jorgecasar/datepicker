@@ -1,4 +1,3 @@
-<link rel="import" href="../js/lib/polymer/polymer.html">
 <link rel="import" href="d-picker-left.html">
 <link rel="import" href="d-picker-right.html">
 <link rel="import" href="d-picker-container.html">
@@ -49,7 +48,7 @@
               break;
           }
           new TimelineLite()
-            .to(container, 0.5, {x: (tl_vals.out * 110), opacity:0})
+            .to(container, 0.5, {x: (tl_vals.out * 180), opacity:0.5})
             .add(function() {
               _this.renderContainer(ndate);
               container = $("d-picker-container");
