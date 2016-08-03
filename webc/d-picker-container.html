@@ -42,12 +42,9 @@
         Polymer.dom(this.root).appendChild(w_labels);
       },
       setMothYearInfo: function() {
-        const months = [
-          'Enero','Febrero','Marzo','Abril','Mayo','Junio',
-          'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'
-        ]
         const m_label = document.createElement("d-picker-month-year-label");
-        Polymer.dom(m_label).setAttribute("month", months[this.date.getMonth()]);
+        const month_str = this.domHost.getMonthStr(this.date.getMonth());
+        Polymer.dom(m_label).setAttribute("month", month_str);
         Polymer.dom(m_label).setAttribute("year", this.date.getFullYear());
         Polymer.dom(this.root).appendChild(m_label);
       }

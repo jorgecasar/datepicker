@@ -14,7 +14,8 @@
     Polymer({
       is: "d-picker-days",
       properties: {
-        date: Date
+        date: Date,
+        monthstr: String
       },
       attached: function() {
         this.addDays();
@@ -50,6 +51,8 @@
         while(current_month == firt_date.getMonth()) {
           const day = document.createElement("d-picker-day");
           Polymer.dom(day).setAttribute("number", current_date.getDate());
+          Polymer.dom(day).setAttribute("month", current_date.getMonth());
+          Polymer.dom(day).setAttribute("year", current_date.getFullYear());
           if(current_date.getMonth() == now.getMonth()
               && current_date.getDate() == now.getDate()
               && current_date.getFullYear() == now.getFullYear()) {

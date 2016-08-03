@@ -2,6 +2,7 @@
 <link rel="import" href="d-picker-left.html">
 <link rel="import" href="d-picker-right.html">
 <link rel="import" href="d-picker-container.html">
+<link rel="import" href="d-picker-show-date.html">
 <dom-module id="d-picker">
   <template strip-whitespace>
     <style>
@@ -24,6 +25,33 @@
       ready: function() {
         this.renderContainer(new Date());
         this.clickGoto();
+        this.showSelectedDay();
+      },
+      showSelectedDay: function(day) {
+        const _this = this;
+        $(this).on("click", "d-picker-day", function() {
+          const day = this.number;
+          const month = _this.getMonthStr(this.month);
+          const year = this.year;
+          const container = _this.$$("d-picker-container");
+          Polymer.dom(_this.root).removeChild(container);
+          const gotos = Polymer.dom(_this.root).querySelectorAll(".goto");
+          $.each(gotos, function(index, node) {
+            Polymer.dom(_this.root).removeChild(node);
+          });
+          const show_date = document.createElement("d-picker-show-date");
+          Polymer.dom(show_date).setAttribute("day", day);
+          Polymer.dom(show_date).setAttribute("month", month);
+          Polymer.dom(show_date).setAttribute("year", year);
+          Polymer.dom(_this.root).appendChild(show_date);
+        });
+      },
+      getMonthStr: function(index) {
+        const months = [
+          'Enero','Febrero','Marzo','Abril','Mayo','Junio',
+          'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'
+        ]
+        return months[index];
       },
       clickGoto: function() {
         const _this = this;

@@ -23,7 +23,12 @@
   </template>
   <script>
     Polymer({
-      is: "d-picker-day"
+      is: "d-picker-day",
+      properties: {
+        number: Number,
+        month: String,
+        year: Number
+      }
     });
   </script>
 </dom-module>
