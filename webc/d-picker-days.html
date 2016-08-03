@@ -53,9 +53,9 @@
           Polymer.dom(day).setAttribute("number", current_date.getDate());
           Polymer.dom(day).setAttribute("month", current_date.getMonth());
           Polymer.dom(day).setAttribute("year", current_date.getFullYear());
-          if(current_date.getMonth() == now.getMonth()
-              && current_date.getDate() == now.getDate()
-              && current_date.getFullYear() == now.getFullYear()) {
+          if(current_date.getMonth() == this.date.getMonth()
+              && current_date.getDate() == this.date.getDate()
+              && current_date.getFullYear() == this.date.getFullYear()) {
             $(day).css("background-color", "#f9f6b9");
           }
           Polymer.dom(this.root).appendChild(day);

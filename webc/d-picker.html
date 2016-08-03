@@ -15,17 +15,33 @@
         overflow: hidden;
       }
     </style>
-    <d-picker-left class="goto"></d-picker-left>
-    <!-- her go the container -->
-    <d-picker-right class="goto"></d-picker-right>
   </template>
   <script>
     Polymer({
       is: "d-picker",
       ready: function() {
+        this.insertGotos();
         this.renderContainer(new Date());
         this.clickGoto();
         this.showSelectedDay();
+        this.showContainerAgain();
+      },
+      showContainerAgain: function() {
+        const _this = this;
+        $(this).on("click", "d-picker-show-date", function() {
+          $(this).remove();
+          const datestr = $(this).attr("datestr");
+          _this.insertGotos();
+          _this.renderContainer(new Date(datestr));
+        });
+      },
+      insertGotos: function() {
+        const left = document.createElement("d-picker-left");
+        Polymer.dom(left).setAttribute("class", "goto");
+        Polymer.dom(this.root).appendChild(left);
+        const right = document.createElement("d-picker-right");
+        Polymer.dom(right).setAttribute("class", "goto");
+        Polymer.dom(this.root).appendChild(right);
       },
       showSelectedDay: function(day) {
         const _this = this;
@@ -43,6 +59,7 @@
           Polymer.dom(show_date).setAttribute("day", day);
           Polymer.dom(show_date).setAttribute("month", month);
           Polymer.dom(show_date).setAttribute("year", year);
+          Polymer.dom(show_date).setAttribute("datestr", (this.month+1)+'/'+day+'/'+year);
           Polymer.dom(_this.root).appendChild(show_date);
         });
       },
