@@ -37,24 +37,22 @@
       clickGoto: function() {
         const _this = this;
         $(this).on("click", ".goto", function() {
-          let container = _this.$$("d-picker-container");
+          let container = $("d-picker-container");
           const ndate = new Date($(this).attr("goto"));
           let tl_vals;
           switch (this.tagName) {
             case 'D-PICKER-RIGHT':
-              tl_vals = {out: 100}
+              tl_vals = {out: 1}
               break;
             case 'D-PICKER-LEFT':
-              tl_vals = {out: -100}
+              tl_vals = {out: -1}
               break;
-            default:
-
           }
           new TimelineLite()
-            .to(container, 0.5, {x: tl_vals.out, opacity:0})
+            .to(container, 0.5, {x: (tl_vals.out * 110), opacity:0})
             .add(function() {
               _this.renderContainer(ndate);
-              container = _this.$$("d-picker-container");
+              container = $("d-picker-container");
               TweenLite.from(container, 0.5, {opacity: 0});
             })
         });
@@ -79,26 +77,32 @@
           const datestr = $(this).attr("datestr");
           _this.insertGotos();
           _this.renderContainer(new Date(datestr));
+          TweenLite.from($("d-picker-container"), 0.5, {y: -110, opacity:0})
         });
       },
       showSelectedDay: function() {
         const _this = this;
         $(this).on("click", "d-picker-day", function() {
+          const this_day = this;
           const day = this.number;
           const month = _this.getMonthStr(this.month);
           const year = this.year;
           const container = _this.$$("d-picker-container");
-          Polymer.dom(_this.root).removeChild(container);
-          const gotos = Polymer.dom(_this.root).querySelectorAll(".goto");
-          $.each(gotos, function(index, node) {
-            Polymer.dom(_this.root).removeChild(node);
-          });
-          const show_date = document.createElement("d-picker-show-date");
-          Polymer.dom(show_date).setAttribute("day", day);
-          Polymer.dom(show_date).setAttribute("month", month);
-          Polymer.dom(show_date).setAttribute("year", year);
-          Polymer.dom(show_date).setAttribute("datestr", (this.month+1)+'/'+day+'/'+year);
-          Polymer.dom(_this.root).appendChild(show_date);
+          new TimelineLite()
+            .to(container, 0.5, {y: -110, opacity:0})
+            .add(function() {
+              Polymer.dom(_this.root).removeChild(container);
+              const gotos = Polymer.dom(_this.root).querySelectorAll(".goto");
+              $.each(gotos, function(index, node) {
+                Polymer.dom(_this.root).removeChild(node);
+              });
+              const show_date = document.createElement("d-picker-show-date");
+              Polymer.dom(show_date).setAttribute("day", day);
+              Polymer.dom(show_date).setAttribute("month", month);
+              Polymer.dom(show_date).setAttribute("year", year);
+              Polymer.dom(show_date).setAttribute("datestr", (this_day.month+1)+'/'+day+'/'+year);
+              Polymer.dom(_this.root).appendChild(show_date);
+            })
         });
       },
       cleanContainers: function() {
