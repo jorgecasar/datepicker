@@ -37,8 +37,26 @@
       clickGoto: function() {
         const _this = this;
         $(this).on("click", ".goto", function() {
+          let container = _this.$$("d-picker-container");
           const ndate = new Date($(this).attr("goto"));
-          _this.renderContainer(ndate);
+          let tl_vals;
+          switch (this.tagName) {
+            case 'D-PICKER-RIGHT':
+              tl_vals = {out: 100}
+              break;
+            case 'D-PICKER-LEFT':
+              tl_vals = {out: -100}
+              break;
+            default:
+
+          }
+          new TimelineLite()
+            .to(container, 0.5, {x: tl_vals.out, opacity:0})
+            .add(function() {
+              _this.renderContainer(ndate);
+              container = _this.$$("d-picker-container");
+              TweenLite.from(container, 0.5, {opacity: 0});
+            })
         });
       },
       setGotoAttr: function(d) {
