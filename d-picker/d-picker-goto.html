@@ -1,0 +1,36 @@
+<dom-module id="d-picker-goto">
+  <template strip-whitespace>
+    <style>
+      :host {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        background-color: #fff;
+        z-index: 999;
+      }
+      :host:hover {
+        background-color: #f5f9fb;
+      }
+      #right, #left {
+        display: none;
+      }
+      :host([right]) #right {
+        display: block;
+      }
+      :host([left]) #left {
+        display: block;
+      }
+    </style>
+    <svg id="right" x="0px" y="0px" width="30px" height="30px" viewBox="0 0 48 48">
+      <polygon points="15.808,24 26.301,13.507 29.973,17.179 23.161,24 29.977,30.816 26.302,34.492"/>
+    </svg>
+    <svg id="left" x="0px" y="0px" width="30px" height="30px" viewBox="0 0 48 48">
+      <polygon points="32.227,24 21.734,13.507 18.062,17.179 24.874,24 18.058,30.816 21.733,34.492"/>
+    </svg>
+  </template>
+  <script>
+    Polymer({
+      is: "d-picker-goto"
+    });
+  </script>
+</dom-module>

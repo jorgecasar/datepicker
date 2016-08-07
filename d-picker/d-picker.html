@@ -1,0 +1,32 @@
+<link rel="import" href="../js/lib/polymer/polymer.html">
+<link rel="import" href="d-picker-goto.html">
+<dom-module id="d-picker">
+  <template strip-whitespace>
+    <style>
+      :host {
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+        width: 260px;
+        display: flex;
+        justify-content: space-between;
+        overflow: hidden;
+      }
+    </style>
+
+  </template>
+  <script>
+    Polymer({
+      is: "d-picker",
+      addGoto: function(goto_type) {
+        const host = Polymer.dom(this.root);
+        const goto = document.createElement("d-picker-goto");
+        Polymer.dom(goto).setAttribute(goto_type, true);
+        host.appendChild(goto);
+      },
+      ready: function() {
+        this.addGoto('right');
+        this.addGoto('left');
+      }
+    });
+  </script>
+</dom-module>
