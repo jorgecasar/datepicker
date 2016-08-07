@@ -13,9 +13,8 @@
         overflow: hidden;
       }
     </style>
-    <d-picker-goto right></d-picker-goto>
-    <div id="container_wrap"></div>
-    <d-picker-goto left></d-picker-goto>
+    <!--d-picker-goto right></d-picker-goto>
+    <d-picker-goto left></d-picker-goto-->
   </template>
   <script>
     Polymer({
@@ -30,10 +29,19 @@
         const container = document.createElement("d-picker-container");
         Polymer.dom(container).setAttribute("date", date);
         Polymer.dom(container).setAttribute("month-list", this.monthList());
-        this.$.container_wrap.appendChild(container);
+        Polymer.dom(this.root).appendChild(container);
+      },
+      addGoto: function(goto_type, date) {
+        const goto = document.createElement("d-picker-goto");
+        Polymer.dom(goto).setAttribute('direction', goto_type);
+        Polymer.dom(goto).setAttribute("date", date);
+        Polymer.dom(this.root).appendChild(goto);
       },
       ready: function() {
-        this.addContainer(new Date('9/19/2016'));
+        const date = new Date('12/19/2016');
+        this.addGoto('left', date);
+        this.addContainer(date);
+        this.addGoto('right', date);
       }
     });
   </script>
