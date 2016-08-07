@@ -16,15 +16,17 @@
         margin-bottom: 15px;
       }
     </style>
-    <d-picker-main-label></d-picker-main-label>
+    <d-picker-main-label date="[[date]]" month-list="[[monthList]]"></d-picker-main-label>
     <d-picker-week-label></d-picker-week-label>
     <d-picker-month date="[[date]]"></d-picker-month>
+
   </template>
   <script>
     Polymer({
       is: "d-picker-container",
       properties: {
-        date: Date
+        date: Date,
+        monthList: String
       }
     });
   </script>

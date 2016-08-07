@@ -11,11 +11,20 @@
         border-bottom: 2px solid #9cc3da;
       }
     </style>
-    Diciembre 15
+    [[label(date, monthList)]]
   </template>
   <script>
     Polymer({
-      is: "d-picker-main-label"
+      is: "d-picker-main-label",
+      properties: {
+        date: Date,
+        monthList: String
+      },
+      label: function(date, list) {
+        const month = list.split(',')[date.getMonth()];
+        const year = date.getFullYear();
+        return month + " " + year;
+      }
     });
   </script>
 </dom-module>
