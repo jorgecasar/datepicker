@@ -1,0 +1,31 @@
+<link rel="import" href="d-picker-main-label.html">
+<link rel="import" href="d-picker-week-label.html">
+<link rel="import" href="d-picker-month.html">
+<dom-module id="d-picker-container">
+  <template strip-whitespace>
+    <style>
+      :host {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+        width: 168px;
+      }
+      d-picker-main-label {
+        margin-top: 10px;
+        margin-bottom: 15px;
+      }
+    </style>
+    <d-picker-main-label></d-picker-main-label>
+    <d-picker-week-label></d-picker-week-label>
+    <d-picker-month date="[[date]]"></d-picker-month>
+  </template>
+  <script>
+    Polymer({
+      is: "d-picker-container",
+      properties: {
+        date: Date
+      }
+    });
+  </script>
+</dom-module>

@@ -1,5 +1,6 @@
 <link rel="import" href="../js/lib/polymer/polymer.html">
 <link rel="import" href="d-picker-goto.html">
+<link rel="import" href="d-picker-container.html">
 <dom-module id="d-picker">
   <template strip-whitespace>
     <style>
@@ -12,20 +13,21 @@
         overflow: hidden;
       }
     </style>
-
+    <d-picker-goto right></d-picker-goto>
+    <div id="container_wrap"></div>
+    <d-picker-goto left></d-picker-goto>
   </template>
   <script>
     Polymer({
       is: "d-picker",
-      addGoto: function(goto_type) {
+      addContainer: function(date) {
         const host = Polymer.dom(this.root);
-        const goto = document.createElement("d-picker-goto");
-        Polymer.dom(goto).setAttribute(goto_type, true);
-        host.appendChild(goto);
+        const container = document.createElement("d-picker-container");
+        Polymer.dom(container).setAttribute("date", date);
+        this.$.container_wrap.appendChild(container);
       },
       ready: function() {
-        this.addGoto('right');
-        this.addGoto('left');
+        this.addContainer(new Date());
       }
     });
   </script>

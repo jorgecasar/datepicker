@@ -1,0 +1,66 @@
+<link rel="import" href="d-picker-day.html">
+<link rel="import" href="d-picker-day-empty.html">
+<dom-module id="d-picker-month">
+  <template strip-whitespace>
+    <style>
+      :host {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    </style>
+    <template is="dom-repeat" items="{{daysOfMonthFunc(date)}}">
+      <template is="dom-if" if="[[!item.disabled]]">
+        <d-picker-day number="[[item.number]]"></d-picker-day>
+      </template>
+      <template is="dom-if" if="[[item.disabled]]">
+        <d-picker-day-empty number="[[item.number]]"></d-picker-day-empty>
+      </template>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      is: "d-picker-month",
+      properties: {
+        date: Date
+      },
+      addDaysToDate: function(date, n) {
+        var result = new Date(date);
+        result.setDate(date.getDate() + n);
+        return result;
+      },
+      daysOfMonthFunc: function(date) {
+        const info = [];
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        const firt_date = new Date(month + '/1/' + year);
+        //Agregar dias desabilitados
+        for(let i = 0; i < firt_date.getDay(); i++) {
+          const old_date = this.addDaysToDate(
+            firt_date, -(firt_date.getDay() - i)
+          )
+          info.push({number: old_date.getDate(), disabled: true});
+        }
+        //...
+        let current_date = firt_date;
+        let current_month = firt_date.getMonth();
+        const now = new Date();
+        while(current_month == firt_date.getMonth()) {
+          info.push({
+            number: current_date.getDate()
+          })
+          current_date = this.addDaysToDate(current_date, 1);
+          current_month = current_date.getMonth();
+        }
+        //Agregar los ultimos dias desabilitados
+        if(current_date.getDay() != 0) {
+          for(let i = 0; i <= 6 - current_date.getDay(); i++) {
+            const next_date = this.addDaysToDate(current_date, i)
+            info.push({number: next_date.getDate(), disabled: true});
+          }
+        }
+        //...
+        return info;
+      }
+    });
+  </script>
+</dom-module>
