@@ -21,13 +21,12 @@
     Polymer({
       is: "d-picker",
       addContainer: function(date) {
-        const host = Polymer.dom(this.root);
         const container = document.createElement("d-picker-container");
         Polymer.dom(container).setAttribute("date", date);
         this.$.container_wrap.appendChild(container);
       },
       ready: function() {
-        this.addContainer(new Date());
+        this.addContainer(new Date('12/20/2016'));
       }
     });
   </script>

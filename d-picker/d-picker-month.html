@@ -9,11 +9,11 @@
       }
     </style>
     <template is="dom-repeat" items="{{daysOfMonthFunc(date)}}">
-      <template is="dom-if" if="[[!item.disabled]]">
-        <d-picker-day number="[[item.number]]"></d-picker-day>
-      </template>
       <template is="dom-if" if="[[item.disabled]]">
         <d-picker-day-empty number="[[item.number]]"></d-picker-day-empty>
+      </template>
+      <template is="dom-if" if="[[!item.disabled]]">
+        <d-picker-day number="[[item.number]]"></d-picker-day>
       </template>
     </template>
   </template>
@@ -28,38 +28,50 @@
         result.setDate(date.getDate() + n);
         return result;
       },
-      daysOfMonthFunc: function(date) {
-        const info = [];
+      addStartEmptyDays: function(d, l) {
+        for(let i = 0; i < d.getDay(); i++) {
+          const ni = -(d.getDay() - i);
+          const od = this.addDaysToDate(d, ni);
+          l.push({
+            number: od.getDate(),
+            disabled: true
+          });
+        }
+      },
+      addEndEmptyDays: function(d, l) {
+        if(d.getDay() != 0) {
+          for(let i = 0; i <= 6 - d.getDay(); i++) {
+            const nd = this.addDaysToDate(d, i);
+            l.push({
+              number: nd.getDate(),
+              disabled: true
+            });
+          }
+        }
+      },
+      firstDate: function(date) {
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
-        const firt_date = new Date(month + '/1/' + year);
-        //Agregar dias desabilitados
-        for(let i = 0; i < firt_date.getDay(); i++) {
-          const old_date = this.addDaysToDate(
-            firt_date, -(firt_date.getDay() - i)
-          )
-          info.push({number: old_date.getDate(), disabled: true});
-        }
-        //...
-        let current_date = firt_date;
-        let current_month = firt_date.getMonth();
+        return new Date(month + '/1/' + year);
+      },
+      addAvailablesDays: function(fd, l) {
+        let current_date = fd;
+        let current_month = fd.getMonth();
         const now = new Date();
-        while(current_month == firt_date.getMonth()) {
-          info.push({
-            number: current_date.getDate()
-          })
+        while(current_month == fd.getMonth()) {
+          l.push({number: current_date.getDate()});
           current_date = this.addDaysToDate(current_date, 1);
           current_month = current_date.getMonth();
         }
-        //Agregar los ultimos dias desabilitados
-        if(current_date.getDay() != 0) {
-          for(let i = 0; i <= 6 - current_date.getDay(); i++) {
-            const next_date = this.addDaysToDate(current_date, i)
-            info.push({number: next_date.getDate(), disabled: true});
-          }
-        }
-        //...
-        return info;
+        return current_date;
+      },
+      daysOfMonthFunc: function(date) {
+        const info_list = [];
+        const firt_date = this.firstDate(date);
+        this.addStartEmptyDays(firt_date, info_list);
+        const current_date = this.addAvailablesDays(firt_date, info_list);
+        this.addEndEmptyDays(current_date, info_list);
+        return info_list;
       }
     });
   </script>
