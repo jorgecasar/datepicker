@@ -18,19 +18,32 @@
         background-color: #ffe8b1;
       }
     </style>
-    [[number]]
+    [[day]]
   </template>
   <script>
     Polymer({
       is: "d-picker-day",
       properties: {
-        iscurrent: Boolean,
-        reflectToAttribute: true
+        day: Number,
+        month: Number,
+        year: Number,
+        iscurrent: Boolean
+      },
+      onTap: function() {
+        this.fire('d-picker-day-ontap', {
+          day: this.day,
+          month: this.month,
+          year: this.year
+        })
       },
       ready: function() {
         if(this.iscurrent) {
           this.customStyle['--d-picker-day-bgc'] = '#f9f6b9';
         }
+        this.listen(Polymer.dom(this).node, 'tap', 'onTap');
+      },
+      detached: function() {
+        this.unlisten(Polymer.dom(this).node, 'tap', 'onTap');
       }
     });
   </script>

@@ -1,6 +1,7 @@
 <link rel="import" href="../js/lib/polymer/polymer.html">
 <link rel="import" href="d-picker-goto.html">
 <link rel="import" href="d-picker-container.html">
+<link rel="import" href="d-picker-date-selected.html">
 <dom-module id="d-picker">
   <template strip-whitespace>
     <style>
@@ -55,7 +56,19 @@
           this.addGoto('right', date);
         }.bind(this));
       },
+      ontapDayAddListener: function() {
+        this.addEventListener('d-picker-day-ontap', function(e) {
+          const data = e.detail;
+          this.cleanContainers();
+          const selected = document.createElement("d-picker-date-selected");
+          Polymer.dom(selected).setAttribute("day", data.day);
+          Polymer.dom(selected).setAttribute("month", this.monthList()[data.month]);
+          Polymer.dom(selected).setAttribute("year", data.year);
+          Polymer.dom(this.$.wrapper).appendChild(selected);
+        }.bind(this));
+      },
       ready: function() {
+        this.ontapDayAddListener();
         this.renderContainerAddListener();
         this.fire('d-picler-render-container', {});
       }

@@ -13,7 +13,11 @@
         <d-picker-day-empty number="[[item.number]]"></d-picker-day-empty>
       </template>
       <template is="dom-if" if="[[!item.disabled]]">
-        <d-picker-day number="[[item.number]]" iscurrent="[[item.iscurrent]]"></d-picker-day>
+        <d-picker-day
+          day="[[item.day]]"
+          month="[[item.month]]"
+          year="[[item.year]]"
+          iscurrent="[[item.iscurrent]]"></d-picker-day>
       </template>
     </template>
   </template>
@@ -59,7 +63,11 @@
         let current_month = fd.getMonth();
         const now = new Date();
         while(current_month == fd.getMonth()) {
-          let reg = {number: current_date.getDate()};
+          let reg = {
+            day: current_date.getDate(),
+            month: current_date.getMonth(),
+            year: current_date.getFullYear()
+          };
           current_month = current_date.getMonth();
           if(current_date.getMonth() == d.getMonth()
               && current_date.getDate() == d.getDate()
