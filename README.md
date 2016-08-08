@@ -1,4 +1,4 @@
 # datepicker
-Datepicker constructed with Polymer and jQuery
+Datepicker constructed with Polymer
 
 DEMO: https://rodrigosaladoanaya.github.io/datepicker/
