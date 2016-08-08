@@ -62,8 +62,9 @@
           this.cleanContainers();
           const selected = document.createElement("d-picker-date-selected");
           Polymer.dom(selected).setAttribute("day", data.day);
-          Polymer.dom(selected).setAttribute("month", this.monthList()[data.month]);
+          Polymer.dom(selected).setAttribute("month", data.month);
           Polymer.dom(selected).setAttribute("year", data.year);
+          Polymer.dom(selected).setAttribute("month-str", this.monthList()[data.month]);
           Polymer.dom(this.$.wrapper).appendChild(selected);
         }.bind(this));
       },

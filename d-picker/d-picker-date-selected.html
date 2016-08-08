@@ -18,11 +18,24 @@
         color: #2f1f1e;
       }
     </style>
-    [[day]] de [[month]] del [[year]]
+    [[day]] de [[monthStr]] del [[year]]
   </template>
   <script>
     Polymer({
-      is: "d-picker-date-selected"
+      is: "d-picker-date-selected",
+      properties: {
+        month: Number
+      },
+      onTap: function() {
+        const dstr = (this.month+1)+'/'+this.day+'/'+this.year;
+        this.fire('d-picler-render-container', {date_str: dstr});
+      },
+      ready: function() {
+        this.listen(Polymer.dom(this).node, 'tap', 'onTap');
+      },
+      detached: function() {
+        this.unlisten(Polymer.dom(this).node, 'tap', 'onTap');
+      }
     });
   </script>
 </dom-module>
