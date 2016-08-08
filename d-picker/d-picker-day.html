@@ -8,21 +8,30 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #f7f7f7;
+        background-color: var(--d-picker-day-bgc, #f7f7f7);
         margin: 2px;
         cursor: default;
         color: #1e4b60;
         font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;
       }
       :host:hover {
-        background-color: #ffe8b1 !important;
+        background-color: #ffe8b1;
       }
     </style>
     [[number]]
   </template>
   <script>
     Polymer({
-      is: "d-picker-day"
+      is: "d-picker-day",
+      properties: {
+        iscurrent: Boolean,
+        reflectToAttribute: true
+      },
+      ready: function() {
+        if(this.iscurrent) {
+          this.customStyle['--d-picker-day-bgc'] = '#f9f6b9';
+        }
+      }
     });
   </script>
 </dom-module>

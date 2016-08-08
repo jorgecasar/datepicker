@@ -62,6 +62,15 @@
           }
         }
         return directions[dir](date);
+      },
+      onTap: function() {
+        this.fire('d-picler-render-container', {date_str: this.gotoDate})
+      },
+      attached: function() {
+        this.listen(Polymer.dom(this).node, 'tap', 'onTap');
+      },
+      detached: function() {
+        this.unlisten(Polymer.dom(this).node, 'tap', 'onTap');
       }
     });
   </script>

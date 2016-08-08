@@ -13,7 +13,7 @@
         <d-picker-day-empty number="[[item.number]]"></d-picker-day-empty>
       </template>
       <template is="dom-if" if="[[!item.disabled]]">
-        <d-picker-day number="[[item.number]]"></d-picker-day>
+        <d-picker-day number="[[item.number]]" iscurrent="[[item.iscurrent]]"></d-picker-day>
       </template>
     </template>
   </template>
@@ -54,14 +54,20 @@
         const year = date.getFullYear();
         return new Date(month + '/1/' + year);
       },
-      addAvailablesDays: function(fd, l) {
+      addAvailablesDays: function(d, fd, l) {
         let current_date = fd;
         let current_month = fd.getMonth();
         const now = new Date();
         while(current_month == fd.getMonth()) {
-          l.push({number: current_date.getDate()});
-          current_date = this.addDaysToDate(current_date, 1);
+          let reg = {number: current_date.getDate()};
           current_month = current_date.getMonth();
+          if(current_date.getMonth() == d.getMonth()
+              && current_date.getDate() == d.getDate()
+              && current_date.getFullYear() == d.getFullYear()) {
+            reg.iscurrent = true;
+          }
+          current_date = this.addDaysToDate(current_date, 1);
+          l.push(reg);
         }
         return current_date;
       },
@@ -69,7 +75,7 @@
         const info_list = [];
         const firt_date = this.firstDate(date);
         this.addStartEmptyDays(firt_date, info_list);
-        const current_date = this.addAvailablesDays(firt_date, info_list);
+        const current_date = this.addAvailablesDays(date, firt_date, info_list);
         this.addEndEmptyDays(current_date, info_list);
         return info_list;
       }

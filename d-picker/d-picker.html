@@ -5,16 +5,18 @@
   <template strip-whitespace>
     <style>
       :host {
+        display: block;
+        width: 260px;
+      }
+      #wrapper {
         border: 1px solid #d9d9d9;
         border-radius: 4px;
-        width: 260px;
         display: flex;
         justify-content: space-between;
         overflow: hidden;
       }
     </style>
-    <!--d-picker-goto right></d-picker-goto>
-    <d-picker-goto left></d-picker-goto-->
+    <div id="wrapper"></div>
   </template>
   <script>
     Polymer({
@@ -29,19 +31,33 @@
         const container = document.createElement("d-picker-container");
         Polymer.dom(container).setAttribute("date", date);
         Polymer.dom(container).setAttribute("month-list", this.monthList());
-        Polymer.dom(this.root).appendChild(container);
+        Polymer.dom(this.$.wrapper).appendChild(container);
       },
       addGoto: function(goto_type, date) {
         const goto = document.createElement("d-picker-goto");
         Polymer.dom(goto).setAttribute('direction', goto_type);
         Polymer.dom(goto).setAttribute("date", date);
-        Polymer.dom(this.root).appendChild(goto);
+        Polymer.dom(this.$.wrapper).appendChild(goto);
+      },
+      cleanContainers: function() {
+        const nodes = Polymer.dom(this.$.wrapper).childNodes;
+        nodes.forEach(function(node) {
+          Polymer.dom(node.parentNode).removeChild(node);
+        });
+      },
+      renderContainerAddListener: function(date_str) {
+        this.addEventListener('d-picler-render-container', function(e){
+          const dstr = e.detail.date_str;
+          const date = dstr?new Date(dstr):new Date();
+          this.cleanContainers();
+          this.addGoto('left', date);
+          this.addContainer(date);
+          this.addGoto('right', date);
+        }.bind(this));
       },
       ready: function() {
-        const date = new Date('12/19/2016');
-        this.addGoto('left', date);
-        this.addContainer(date);
-        this.addGoto('right', date);
+        this.renderContainerAddListener();
+        this.fire('d-picler-render-container', {});
       }
     });
   </script>
